@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Termos & Chat · ChiluDigital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+    :root {
+      --bg: #0A0A1A;
+      --card-bg: rgba(255,255,255,0.05);
+      --glass: rgba(255,255,255,0.08);
+      --text: #f0f4ff;
+      --shadow: 0 15px 35px rgba(0,0,0,0.5);
+      --cyan: #00D4FF;
+      --purple: #7B2FBE;
+      --border: rgba(255,255,255,0.15);
+    }
+    .light-mode {
+      --bg: #f2f6ff;
+      --card-bg: rgba(255,255,255,0.6);
+      --glass: rgba(255,255,255,0.7);
+      --text: #0A0A1A;
+      --shadow: 0 15px 35px rgba(0,0,0,0.1);
+      --border: rgba(0,0,0,0.1);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .glass {
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 30px; margin-top: 20px;
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      border-radius: 60px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: sticky; top: 16px; z-index: 999;
+      transition: background 0.3s;
+    }
+    .logo {
+      font-size: 1.8rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .nav-menu { display: flex; gap: 28px; align-items: center; }
+    .nav-menu a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: 0.2s; }
+    .nav-menu a:hover { color: var(--cyan); }
+    .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--text); }
+    .theme-toggle { background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; margin-left: 12px; }
+    .btn {
+      padding: 14px 40px; border-radius: 50px; font-weight: 600; border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff; cursor: pointer; transition: 0.25s; box-shadow: 0 8px 20px rgba(0,212,255,0.3);
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn:hover { transform: scale(1.04) translateY(-4px); box-shadow: 0 16px 30px rgba(123,47,190,0.4); }
+    .back-top {
+      position: fixed; bottom: 100px; right: 30px; z-index: 99;
+      background: var(--cyan); color: #0A0A1A; width: 50px; height: 50px;
+      border-radius: 50%; display: none; align-items: center; justify-content: center;
+      font-size: 1.8rem; cursor: pointer; border: none;
+      box-shadow: 0 8px 20px rgba(0,212,255,0.3);
+    }
+    .whatsapp-float {
+      position: fixed; bottom: 30px; right: 30px; z-index: 999;
+      background: #25D366; width: 70px; height: 70px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 3.2rem;
+      color: white; box-shadow: 0 10px 30px rgba(37,211,102,0.5);
+      animation: pulse-w 2s infinite; text-decoration: none;
+      transition: 0.2s;
+    }
+    .whatsapp-float:hover { transform: scale(1.08); }
+    @keyframes pulse-w { 0%{box-shadow:0 0 0 0 rgba(37,211,102,0.6)} 70%{box-shadow:0 0 0 20px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
+
+    /* TABS */
+    .tabs-section {
+      margin: 40px 0;
+    }
+    .tabs-section h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      background: linear-gradient(135deg, var(--cyan), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .tabs-section .subtitle { opacity: 0.7; margin-bottom: 24px; }
+
+    .tabs-container {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 32px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .tabs-nav {
+      display: flex;
+      background: rgba(0,0,0,0.2);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 12px;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 14px 32px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.6;
+    }
+    .tab-btn:hover { opacity: 1; background: rgba(255,255,255,0.05); }
+    .tab-btn.active {
+      opacity: 1;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,212,255,0.2);
+    }
+    .tab-btn i { font-size: 1.2rem; }
+
+    .tab-content {
+      display: none;
+      padding: 32px 36px;
+      animation: fadeUp 0.4s ease;
+    }
+    .tab-content.active { display: block; }
+
+    /* TERMOS */
+    .terms-content h3 { color: var(--cyan); margin: 20px 0 8px; }
+    .terms-content p { opacity: 0.85; line-height: 1.7; margin-bottom: 12px; }
+    .terms-content ul { padding-left: 24px; opacity: 0.85; }
+    .terms-content ul li { margin: 6px 0; }
+
+    /* CHAT */
+    .chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 6px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+    .msg {
+      max-width: 80%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      animation: fadeUp 0.3s ease;
+      line-height: 1.5;
+    }
+    .msg.bot {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .msg.user {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .quick-questions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 0 16px;
+    }
+    .quick-btn {
+      padding: 8px 20px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: 0.25s;
+    }
+    .quick-btn:hover {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      border-color: transparent;
+      transform: scale(1.05);
+    }
+    .chat-input {
+      display: flex;
+      gap: 12px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .chat-input input:focus { border-color: var(--cyan); }
+    .chat-input button {
+      padding: 14px 30px;
+      border-radius: 50px;
+      border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .chat-input button:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,212,255,0.3); }
+
+    footer {
+      margin-top: 60px; padding: 40px 0 20px; border-top: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px;
+    }
+    .social-links a { color: var(--text); font-size: 1.8rem; margin: 0 8px; transition: 0.2s; }
+    .social-links a:hover { color: var(--cyan); transform: scale(1.1); }
+
+    @media (max-width: 800px) {
+      .nav-menu { display: none; flex-direction: column; background: var(--glass); backdrop-filter: blur(20px); position: absolute; top: 80px; right: 20px; padding: 30px; border-radius: 30px; min-width: 180px; gap: 18px; }
+      .nav-menu.open { display: flex; }
+      .menu-toggle { display: block; }
+      header { padding: 12px 20px; }
+      .tab-content { padding: 20px 16px; }
+      .tab-btn { padding: 10px 18px; font-size: 0.85rem; }
+      .chat-messages { height: 220px; }
+      .chat-input { flex-direction: column; }
+      .chat-input button { width: 100%; }
+      .tabs-nav { padding: 6px 8px; }
+    }
+    .scroll-reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease; }
+    .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp { 0%{opacity:0;transform:translateY(12px)} 100%{opacity:1;transform:translateY(0)} }
+    .badge {
+      display: inline-block; background: rgba(0,212,255,0.12); padding: 4px 16px;
+      border-radius: 30px; color: var(--cyan); font-size: 0.8rem; border: 1px solid rgba(0,212,255,0.2);
+    }
+  </style>
+</head>
+<body>
+<canvas id="particles-canvas"></canvas>
+
+<div class="container">
+  <header>
+    <div class="logo">ChiluDigital</div>
+    <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
+    <nav class="nav-menu" id="navMenu">
+      <a href="#tabs">Termos & Chat</a>
+      <a href="#contato">Contato</a>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </nav>
+  </header>
+
+  <!-- TABS SECTION -->
+  <section id="tabs" class="tabs-section scroll-reveal">
+    <span class="badge"><i class="fas fa-gavel"></i> Documentação oficial</span>
+    <h1>Termos & <span style="color:var(--cyan);">Assistente</span></h1>
+    <p class="subtitle">Consulte nossos termos ou converse com o assistente virtual para tirar dúvidas rápidas.</p>
+
+    <div class="tabs-container">
+      <!-- Navegação das Tabs -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="termos"><i class="fas fa-file-contract"></i> Termos & Condições</button>
+        <button class="tab-btn" data-tab="chat"><i class="fas fa-robot"></i> Chatbot</button>
+      </div>
+
+      <!-- CONTEÚDO: TERMOS -->
+      <div class="tab-content active" id="tab-termos">
+        <div class="terms-content">
+          <p style="opacity:0.6; margin-bottom:16px;">Última atualização: 14 de Agosto de 2026</p>
+
+          <h3><i class="fas fa-check-circle" style="color:var(--cyan);"></i> 1. Aceitação dos Termos</h3>
+          <p>Ao utilizar os serviços da ChiluDigital, você concorda com estes termos. Se não concordar, por favor, não utilize nossos serviços.</p>
+
+          <h3><i class="fas fa-briefcase" style="color:var(--purple);"></i> 2. Serviços Oferecidos</h3>
+          <p>A ChiluDigital oferece serviços de criação de sites, design de logos, identidade visual, consultoria de marca e estratégia digital. Os detalhes de cada serviço são definidos em contrato específico.</p>
+
+          <h3><i class="fas fa-hand-holding-usd" style="color:var(--cyan);"></i> 3. Pagamento e Preços</h3>
+          <ul>
+            <li>Os preços são apresentados em Metical (MZN) e podem ser ajustados conforme a complexidade do projeto.</li>
+            <li>Exigimos 50% de entrada para iniciar o projeto e 50% na entrega final.</li>
+            <li>Aceitamos transferência bancária, M-Pesa e outros meios acordados.</li>
+          </ul>
+
+          <h3><i class="fas fa-clock" style="color:var(--purple);"></i> 4. Prazos e Entregas</h3>
+          <p>Os prazos são acordados no início do projeto. Atrasos por parte do cliente podem impactar o cronograma. A ChiluDigital se compromete a entregar no prazo estipulado.</p>
+
+          <h3><i class="fas fa-lock" style="color:var(--cyan);"></i> 5. Propriedade Intelectual</h3>
+          <p>Após o pagamento integral, todos os direitos sobre os materiais criados (código, design, logos, etc.) são transferidos ao cliente. A ChiluDigital reserva-se o direito de exibir o projeto em seu portfólio.</p>
+
+          <h3><i class="fas fa-headset" style="color:var(--purple);"></i> 6. Suporte e Manutenção</h3>
+          <p>Oferecemos suporte técnico por período determinado em cada plano. Suporte adicional pode ser contratado separadamente.</p>
+
+          <h3><i class="fas fa-shield-alt" style="color:var(--cyan);"></i> 7. Responsabilidades</h3>
+          <p>A ChiluDigital não se responsabiliza por danos indiretos ou perda de dados. O cliente é responsável por fornecer conteúdo e informações precisas.</p>
+
+          <h3><i class="fas fa-gavel" style="color:var(--purple);"></i> 8. Lei Aplicável</h3>
+          <p>Estes termos são regidos pelas leis da República de Moçambique. Qualquer disputa será resolvida nos tribunais de Maputo.</p>
+        </div>
+      </div>
+
+      <!-- CONTEÚDO: CHAT -->
+      <div class="tab-content" id="tab-chat">
+        <div style="margin-bottom:12px;">
+          <p style="opacity:0.7;"><i class="fas fa-info-circle"></i> Pergunte sobre serviços, preços, prazos ou qualquer dúvida.</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg bot">
+            <i class="fas fa-robot" style="margin-right:8px;"></i> Olá! 👋 Sou o assistente da ChiluDigital. Como posso ajudar? Escolha uma pergunta rápida ou digite sua dúvida.
+          </div>
+        </div>
+
+        <div class="quick-questions" id="quickQuestions">
+          <button class="quick-btn" data-question="Quais serviços vocês oferecem?">📋 Serviços</button>
+          <button class="quick-btn" data-question="Quanto custa um site?">💰 Preços</button>
+          <button class="quick-btn" data-question="Qual o prazo de entrega?">⏱️ Prazo</button>
+          <button class="quick-btn" data-question="Como funciona o pagamento?">💳 Pagamento</button>
+          <button class="quick-btn" data-question="Vocês fazem suporte?">🛠️ Suporte</button>
+          <button class="quick-btn" data-question="Onde vocês estão localizados?">📍 Localização</button>
+          <button class="quick-btn" data-question="Qual o valor de um logo?">🎨 Logo</button>
+        </div>
+
+        <div class="chat-input">
+          <input type="text" id="chatInput" placeholder="Digite sua pergunta...">
+          <button id="sendBtn"><i class="fas fa-paper-plane"></i> Enviar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="scroll-reveal" style="margin:50px 0;">
+    <div style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center; background:var(--glass); backdrop-filter:blur(8px); border-radius:48px; padding:40px 30px; border:1px solid var(--border); text-align:center;">
+      <div><h3 style="font-size:2rem;">Precisa de <span style="color:var(--cyan);">atendimento humano</span>?</h3><p style="opacity:0.8;">Fale connosco diretamente pelo WhatsApp ou email.</p></div>
+      <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+        <a href="https://wa.me/258840000000?text=Olá!%20Vi%20os%20termos%20e%20o%20chat%20da%20ChiluDigital." target="_blank" class="btn" style="background:#25D366; box-shadow:0 8px 20px rgba(37,211,102,0.3);"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="mailto:ola@chiludigital.co.mz" class="btn btn-outline" style="background:transparent; border:1.5px solid var(--cyan); color:var(--cyan);"><i class="fas fa-envelope"></i> Email</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div><div class="logo" style="font-size:1.8rem;">ChiluDigital</div><p style="opacity:0.7;">© 2026 · Moçambique</p></div>
+    <div class="social-links">
+      <a href="https://wa.me/258840000000" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://instagram.com/seu_perfil" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com/sua_pagina" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://linkedin.com/company/seu_perfil" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com/seu_usuario" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://youtube.com/@seu_canal" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://tiktok.com/@seu_perfil" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://twitter.com/seu_perfil" target="_blank"><i class="fab fa-twitter"></i></a>
+    </div>
+  </footer>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/258840000000?text=Olá!%20Vi%20os%20termos%20e%20o%20chat%20da%20ChiluDigital." class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+  // PARTICLES
+  (function() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, dots = [];
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    class Dot { constructor() { this.x = Math.random()*w; this.y = Math.random()*h; this.r = Math.random()*2+0.8; this.dx = (Math.random()-0.5)*0.6; this.dy = (Math.random()-0.5)*0.6; } update() { this.x += this.dx; this.y += this.dy; if(this.x<0||this.x>w)this.dx*=-1; if(this.y<0||this.y>h)this.dy*=-1; } }
+    for(let i=0;i<100;i++) dots.push(new Dot());
+    function draw() {
+      ctx.clearRect(0,0,w,h);
+      dots.forEach(d => { ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fillStyle = '#00D4FF'; ctx.shadowColor = '#7B2FBE'; ctx.shadowBlur = 12; ctx.fill(); });
+      ctx.shadowBlur = 0;
+      for(let i=0;i<dots.length;i++){ for(let j=i+1;j<dots.length;j++){ const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, dist=Math.hypot(dx,dy); if(dist<140){ ctx.beginPath(); ctx.moveTo(dots[i].x,dots[i].y); ctx.lineTo(dots[j].x,dots[j].y); ctx.strokeStyle = `rgba(0,212,255,${0.12*(1-dist/140)})`; ctx.lineWidth=0.8; ctx.stroke(); } } }
+      dots.forEach(d=>d.update());
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  // MENU
+  document.getElementById('menuToggle').addEventListener('click', ()=> {
+    document.getElementById('navMenu').classList.toggle('open');
+  });
+
+  // THEME
+  document.getElementById('themeToggle').addEventListener('click', ()=> {
+    document.body.classList.toggle('light-mode');
+    const icon = document.querySelector('#themeToggle i');
+    icon.classList.toggle('fa-moon');
+    icon.classList.toggle('fa-sun');
+  });
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.scroll-reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.2 });
+  reveals.forEach(el => observer.observe(el));
+
+  // BACK TO TOP
+  const backBtn = document.getElementById('backTop');
+  window.addEventListener('scroll', ()=> {
+    backBtn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+
+  // ========== TABS ==========
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = {
+    termos: document.getElementById('tab-termos'),
+    chat: document.getElementById('tab-chat')
+  };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const tab = this.dataset.tab;
+      Object.keys(tabContents).forEach(key => {
+        tabContents[key].classList.toggle('active', key === tab);
+      });
+    });
+  });
+
+  // ========== CHAT BOT ==========
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  const knowledgeBase = {
+    "quais serviços vocês oferecem": "Oferecemos criação de sites, design de logos, identidade visual, consultoria de marca, estratégia digital e conteúdo para redes sociais. Tudo personalizado para seu negócio!",
+    "quanto custa um site": "Nossos sites começam em 5.000 MZN (Básico), 12.500 MZN (Profissional) e 25.000 MZN (Premium). O valor varia conforme a complexidade e funcionalidades.",
+    "qual o prazo de entrega": "O prazo médio é de 2 a 4 semanas, dependendo da complexidade do projeto. Entregamos cronograma detalhado no início do projeto.",
+    "como funciona o pagamento": "Trabalhamos com 50% de sinal para iniciar o projeto e 50% na entrega final. Aceitamos transferência bancária, M-Pesa e outros meios acordados.",
+    "vocês fazem suporte": "Sim! Todos os planos incluem suporte técnico. O período varia de 1 a 12 meses conforme o plano escolhido. Suporte adicional pode ser contratado.",
+    "onde vocês estão localizados": "Estamos sediados em Maputo, Moçambique. Atendemos clientes em todo o país e também remotamente para outros mercados.",
+    "olá": "Olá! 👋 Como posso ajudar você hoje? Pergunte sobre nossos serviços, preços ou qualquer dúvida.",
+    "oi": "Oi! 😊 Estou aqui para ajudar. O que você gostaria de saber sobre a ChiluDigital?",
+    "obrigado": "Por nada! 🚀 Estamos aqui para ajudar. Precisa de mais alguma informação?",
+    "qual o valor de um logo": "Nossos logos personalizados começam em 2.500 MZN. Inclui pesquisa, conceito, arquivos vetoriais e manual de aplicação.",
+    "vocês criam identidade visual": "Sim! Criamos identidades visuais completas, incluindo logo, paleta de cores, tipografia, padrões e manual de marca. A partir de 7.500 MZN.",
+    "trabalham com que tecnologias": "Trabalhamos com HTML5, CSS3, JavaScript, React, Node.js, WordPress, Figma, Adobe Creative Suite e muito mais!",
+    "como contratar": "Fale connosco pelo WhatsApp ou email. Fazemos uma reunião para entender seu projeto e apresentamos uma proposta personalizada.",
+    "default": "Desculpe, não entendi. 😅 Posso ajudar com: serviços, preços, prazos, pagamento, suporte, localização ou logos. Escolha uma das perguntas rápidas acima."
+  };
+
+  function getBotResponse(question) {
+    const q = question.toLowerCase().trim();
+    for (const [key, value] of Object.entries(knowledgeBase)) {
+      if (q.includes(key) || key.includes(q)) return value;
+    }
+    if (q.includes('serviço') || q.includes('oferece')) return knowledgeBase["quais serviços vocês oferecem"];
+    if (q.includes('preço') || q.includes('valor') || q.includes('custa')) return knowledgeBase["quanto custa um site"];
+    if (q.includes('prazo') || q.includes('tempo') || q.includes('entrega')) return knowledgeBase["qual o prazo de entrega"];
+    if (q.includes('pagamento') || q.includes('pagar')) return knowledgeBase["como funciona o pagamento"];
+    if (q.includes('suporte') || q.includes('ajuda')) return knowledgeBase["vocês fazem suporte"];
+    if (q.includes('local') || q.includes('onde') || q.includes('endereço')) return knowledgeBase["onde vocês estão localizados"];
+    if (q.includes('logo') || q.includes('logotipo')) return knowledgeBase["qual o valor de um logo"];
+    if (q.includes('identidade') || q.includes('marca')) return knowledgeBase["vocês criam identidade visual"];
+    if (q.includes('tecnologia') || q.includes('programação')) return knowledgeBase["trabalham com que tecnologias"];
+    if (q.includes('contratar') || q.includes('como fazer')) return knowledgeBase["como contratar"];
+    return knowledgeBase["default"];
+  }
+
+  function addMessage(text, isUser = false) {
+    const msg = document.createElement('div');
+    msg.className = `msg ${isUser ? 'user' : 'bot'}`;
+    if (!isUser) {
+      msg.innerHTML = `<i class="fas fa-robot" style="margin-right:8px;"></i> ${text}`;
+    } else {
+      msg.textContent = text;
+    }
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addMessage(text, true);
+    chatInput.value = '';
+    setTimeout(() => {
+      const response = getBotResponse(text);
+      addMessage(response);
+    }, 400 + Math.random() * 600);
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  document.querySelectorAll('.quick-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const question = this.dataset.question;
+      chatInput.value = question;
+      sendMessage();
+    });
+  });
+</script>
+</body>
+</html>
