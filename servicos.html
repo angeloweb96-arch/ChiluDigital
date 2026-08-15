@@ -12,27 +12,32 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
     :root {
       --bg: #0A0A1A;
-      --card-bg: rgba(255,255,255,0.05);
-      --glass: rgba(255,255,255,0.08);
+      --card-bg: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.06);
       --text: #f0f4ff;
-      --shadow: 0 15px 35px rgba(0,0,0,0.5);
+      --text-secondary: rgba(255,255,255,0.7);
+      --shadow: 0 15px 35px rgba(0,0,0,0.6);
       --cyan: #00D4FF;
       --purple: #7B2FBE;
-      --border: rgba(255,255,255,0.15);
+      --border: rgba(255,255,255,0.08);
+      --glass-hover: rgba(255,255,255,0.12);
     }
     .light-mode {
-      --bg: #f2f6ff;
-      --card-bg: rgba(255,255,255,0.6);
-      --glass: rgba(255,255,255,0.7);
+      --bg: #f0f4ff;
+      --card-bg: rgba(255,255,255,0.7);
+      --glass: rgba(255,255,255,0.6);
       --text: #0A0A1A;
-      --shadow: 0 15px 35px rgba(0,0,0,0.1);
-      --border: rgba(0,0,0,0.1);
+      --text-secondary: rgba(0,0,0,0.6);
+      --shadow: 0 15px 35px rgba(0,0,0,0.08);
+      --border: rgba(0,0,0,0.08);
+      --glass-hover: rgba(255,255,255,0.9);
     }
     body {
       background: var(--bg);
       color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.4s ease, color 0.4s ease;
       overflow-x: hidden;
+      min-height: 100vh;
     }
     #particles-canvas {
       position: fixed;
@@ -41,11 +46,11 @@
       z-index: 0;
       pointer-events: none;
     }
-    .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 2; }
     .glass {
       background: var(--glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border);
       border-radius: 28px;
       box-shadow: var(--shadow);
@@ -53,52 +58,105 @@
     }
     header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 30px; margin-top: 20px;
+      padding: 14px 28px;
+      margin-top: 20px;
       background: var(--glass);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-radius: 60px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       position: sticky; top: 16px; z-index: 999;
-      transition: background 0.3s;
+      transition: background 0.3s, border-color 0.3s;
     }
     .logo {
       font-size: 1.8rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       letter-spacing: -0.5px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .nav-menu { display: flex; gap: 28px; align-items: center; }
-    .nav-menu a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: 0.2s; }
+    .logo i { -webkit-text-fill-color: var(--cyan); font-size: 1.4rem; }
+    .nav-menu { display: flex; gap: 32px; align-items: center; }
+    .nav-menu a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.25s;
+      position: relative;
+    }
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      transition: 0.3s;
+    }
+    .nav-menu a:hover::after { width: 100%; }
     .nav-menu a:hover { color: var(--cyan); }
     .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--text); }
-    .theme-toggle { background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; margin-left: 12px; }
+    .theme-toggle {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 42px; height: 42px;
+      color: var(--text);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-toggle:hover { background: var(--glass-hover); transform: rotate(30deg); }
     .btn {
-      padding: 14px 40px; border-radius: 50px; font-weight: 600; border: none;
+      padding: 14px 38px;
+      border-radius: 50px;
+      font-weight: 600;
+      border: none;
       background: linear-gradient(135deg, var(--cyan), var(--purple));
-      color: #fff; cursor: pointer; transition: 0.25s; box-shadow: 0 8px 20px rgba(0,212,255,0.3);
-      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0,212,255,0.25);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
     }
-    .btn:hover { transform: scale(1.04) translateY(-4px); box-shadow: 0 16px 30px rgba(123,47,190,0.4); }
-    .btn-outline { background: transparent; border: 1.5px solid var(--cyan); color: var(--cyan); box-shadow: none; }
-    .back-top { position: fixed; bottom: 100px; right: 30px; z-index: 99; background: var(--cyan); color: #0A0A1A; width: 50px; height: 50px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; border: none; box-shadow: 0 8px 20px rgba(0,212,255,0.3); }
-    .whatsapp-float {
-      position: fixed; bottom: 30px; right: 30px; z-index: 999;
-      background: #25D366; width: 70px; height: 70px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; font-size: 3.2rem;
-      color: white; box-shadow: 0 10px 30px rgba(37,211,102,0.5);
-      animation: pulse-w 2s infinite; text-decoration: none;
-      transition: 0.2s;
+    .btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(123,47,190,0.35);
     }
-    .whatsapp-float:hover { transform: scale(1.08); }
-    @keyframes pulse-w { 0%{box-shadow:0 0 0 0 rgba(37,211,102,0.6)} 70%{box-shadow:0 0 0 20px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
-
-    /* SERVIÇOS ESPECÍFICOS */
+    .btn-whatsapp {
+      background: #25D366;
+      box-shadow: 0 8px 25px rgba(37,211,102,0.3);
+    }
+    .btn-whatsapp:hover { box-shadow: 0 12px 35px rgba(37,211,102,0.4); }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-title span { background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .section-sub {
+      text-align: center;
+      opacity: 0.6;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
     .services-hero {
       text-align: center;
-      padding: 60px 20px 30px;
+      padding: 50px 20px 30px;
     }
     .services-hero h1 {
       font-size: clamp(2.8rem, 8vw, 4.5rem);
@@ -108,14 +166,14 @@
       background-clip: text;
     }
     .services-hero p { font-size: 1.2rem; opacity: 0.8; max-width: 700px; margin: 16px auto; }
-
     .service-card-3d {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-radius: 40px;
       padding: 40px 28px;
       border: 1px solid var(--border);
-      transition: all 0.3s ease;
+      transition: all 0.35s ease;
       transform-style: preserve-3d;
       perspective: 900px;
       box-shadow: var(--shadow);
@@ -126,35 +184,46 @@
     .service-card-3d:hover {
       transform: rotateY(6deg) rotateX(4deg) translateZ(20px) scale(1.02);
       border-color: var(--cyan);
-      box-shadow: 0 30px 50px rgba(0,212,255,0.15);
+      box-shadow: 0 30px 50px rgba(0,212,255,0.12);
     }
     .service-card-3d .icon-wrap {
-      font-size: 4rem; color: var(--cyan); margin-bottom: 16px;
-      background: rgba(0,212,255,0.08); width: 100px; height: 100px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 3.2rem;
+      color: var(--cyan);
+      background: rgba(0,212,255,0.06);
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin: 0 auto 20px;
-      border: 1px solid rgba(0,212,255,0.2);
+      border: 1px solid rgba(0,212,255,0.08);
       transition: 0.3s;
     }
-    .service-card-3d:hover .icon-wrap { background: rgba(0,212,255,0.2); transform: scale(1.05); }
+    .service-card-3d:hover .icon-wrap {
+      background: rgba(0,212,255,0.12);
+      transform: scale(1.05);
+    }
     .service-card-3d h3 { font-size: 1.8rem; margin-bottom: 8px; }
     .service-card-3d .price-tag { color: var(--cyan); font-weight: 700; font-size: 1.4rem; margin: 12px 0; }
     .service-card-3d ul { list-style: none; margin: 16px 0; text-align: left; padding: 0 12px; }
     .service-card-3d ul li { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; }
     .service-card-3d ul li i { color: var(--purple); width: 20px; }
-
     .services-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 40px; margin: 40px 0 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 40px;
+      margin: 40px 0 60px;
     }
-
     .process-steps {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-      gap: 24px; margin: 40px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin: 40px 0;
     }
     .step {
       background: var(--glass);
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: 28px;
       padding: 24px 16px;
       border: 1px solid var(--border);
@@ -163,39 +232,122 @@
     }
     .step:hover { transform: translateY(-8px); border-color: var(--purple); }
     .step .num { font-size: 2.6rem; font-weight: 800; color: var(--cyan); opacity: 0.5; }
-
     .faq-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-      gap: 24px; margin: 30px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin: 30px 0;
     }
     .faq-item {
       background: var(--card-bg);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       border-radius: 24px;
       padding: 24px;
       border: 1px solid var(--border);
+      transition: 0.3s;
     }
+    .faq-item:hover { transform: translateY(-6px); border-color: var(--cyan); }
     .faq-item h4 { color: var(--cyan); margin-bottom: 6px; }
-
     footer {
-      margin-top: 60px; padding: 40px 0 20px; border-top: 1px solid var(--border);
-      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px;
+      margin-top: 60px;
+      padding: 40px 0 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      align-items: center;
     }
-    .social-links a { color: var(--text); font-size: 1.8rem; margin: 0 8px; transition: 0.2s; }
-    .social-links a:hover { color: var(--cyan); transform: scale(1.1); }
-
-    @media (max-width: 800px) {
-      .nav-menu { display: none; flex-direction: column; background: var(--glass); backdrop-filter: blur(20px); position: absolute; top: 80px; right: 20px; padding: 30px; border-radius: 30px; min-width: 180px; gap: 18px; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
+    .footer-links a:hover { color: var(--cyan); }
+    .social-links a {
+      color: var(--text-secondary);
+      font-size: 1.6rem;
+      margin: 0 6px;
+      transition: 0.25s;
+      display: inline-block;
+    }
+    .social-links a:hover { color: var(--cyan); transform: translateY(-3px) scale(1.1); }
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      z-index: 999;
+      background: #25D366;
+      width: 65px; height: 65px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: white;
+      box-shadow: 0 10px 35px rgba(37,211,102,0.4);
+      animation: pulse-w 2.5s infinite;
+      text-decoration: none;
+      transition: 0.25s;
+    }
+    .whatsapp-float:hover { transform: scale(1.08); }
+    @keyframes pulse-w {
+      0%{box-shadow:0 0 0 0 rgba(37,211,102,0.5)}
+      70%{box-shadow:0 0 0 25px rgba(37,211,102,0)}
+      100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}
+    }
+    .back-top {
+      position: fixed;
+      bottom: 100px; right: 28px;
+      z-index: 99;
+      background: var(--cyan);
+      color: #0A0A1A;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 25px rgba(0,212,255,0.25);
+      transition: 0.3s;
+    }
+    .back-top:hover { transform: translateY(-4px) scale(1.05); }
+    .badge {
+      display: inline-block;
+      background: rgba(0,212,255,0.08);
+      padding: 4px 18px;
+      border-radius: 30px;
+      color: var(--cyan);
+      font-size: 0.8rem;
+      border: 1px solid rgba(0,212,255,0.1);
+    }
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (max-width: 900px) {
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: var(--glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        position: absolute;
+        top: 76px; right: 16px;
+        padding: 28px 32px;
+        border-radius: 28px;
+        min-width: 200px;
+        gap: 16px;
+        border: 1px solid var(--border);
+      }
       .nav-menu.open { display: flex; }
       .menu-toggle { display: block; }
       header { padding: 12px 20px; }
       .services-hero { padding: 40px 10px; }
-    }
-    .scroll-reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease; }
-    .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
-    .badge {
-      display: inline-block; background: rgba(0,212,255,0.12); padding: 4px 16px;
-      border-radius: 30px; color: var(--cyan); font-size: 0.8rem; border: 1px solid rgba(0,212,255,0.2);
     }
   </style>
 </head>
@@ -204,27 +356,27 @@
 
 <div class="container">
   <header>
-    <div class="logo">ChiluDigital</div>
+    <a href="index.html" class="logo"><i class="fas fa-cube"></i> ChiluDigital</a>
     <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
     <nav class="nav-menu" id="navMenu">
-      <a href="#servicos">Serviços</a>
-      <a href="#processo">Processo</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contato">Contato</a>
+      <a href="index.html">Início</a>
+      <a href="servicos.html">Serviços</a>
+      <a href="portfolio.html">Portfólio</a>
+      <a href="precos.html">Preços</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="termos.html">Termos</a>
+      <a href="index.html#contato">Contato</a>
       <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
     </nav>
   </header>
 
-  <!-- HERO SERVIÇOS -->
   <section class="services-hero scroll-reveal">
     <span class="badge"><i class="fas fa-star"></i> Especialistas em branding digital</span>
     <h1>Nossos <span style="color:var(--cyan);">Serviços</span></h1>
     <p>Soluções completas para transformar sua marca em uma experiência digital memorável. Da estratégia à execução.</p>
   </section>
 
-  <!-- CARDS DE SERVIÇOS 3D -->
-  <section id="servicos" class="services-grid scroll-reveal">
-    <!-- Criação de Sites -->
+  <section class="services-grid scroll-reveal">
     <div class="service-card-3d">
       <div class="icon-wrap"><i class="fas fa-code"></i></div>
       <h3>Criação de Sites</h3>
@@ -235,10 +387,9 @@
         <li><i class="fas fa-check-circle"></i> Integração com redes sociais</li>
         <li><i class="fas fa-check-circle"></i> Painel de gestão fácil</li>
       </ul>
-      <a href="https://wa.me/258840000000?text=Olá!%20Quero%20um%20site%20com%20a%20ChiluDigital." target="_blank" class="btn" style="padding:10px 32px; margin-top:12px;"><i class="fab fa-whatsapp"></i> Solicitar orçamento</a>
+      <a href="https://wa.me/258834475438?text=Olá!%20Quero%20um%20site%20com%20a%20ChiluDigital." target="_blank" class="btn" style="padding:10px 32px; margin-top:12px; width:100%; justify-content:center;"><i class="fab fa-whatsapp"></i> Solicitar orçamento</a>
     </div>
 
-    <!-- Design de Logos -->
     <div class="service-card-3d" style="border-color:var(--purple);">
       <div class="icon-wrap" style="color:var(--purple); border-color:rgba(123,47,190,0.3);"><i class="fas fa-paint-brush"></i></div>
       <h3>Design de Logos</h3>
@@ -249,10 +400,9 @@
         <li><i class="fas fa-check-circle"></i> Manual de aplicação</li>
         <li><i class="fas fa-check-circle"></i> Arquivos vetoriais editáveis</li>
       </ul>
-      <a href="https://wa.me/258840000000?text=Olá!%20Quero%20um%20logo%20personalizado%20com%20a%20ChiluDigital." target="_blank" class="btn" style="padding:10px 32px; margin-top:12px;"><i class="fab fa-whatsapp"></i> Solicitar orçamento</a>
+      <a href="https://wa.me/258834475438?text=Olá!%20Quero%20um%20logo%20personalizado%20com%20a%20ChiluDigital." target="_blank" class="btn" style="padding:10px 32px; margin-top:12px; width:100%; justify-content:center;"><i class="fab fa-whatsapp"></i> Solicitar orçamento</a>
     </div>
 
-    <!-- Consultoria de Marca -->
     <div class="service-card-3d">
       <div class="icon-wrap"><i class="fas fa-bullhorn"></i></div>
       <h3>Consultoria de Marca</h3>
@@ -263,14 +413,13 @@
         <li><i class="fas fa-check-circle"></i> Estratégia de comunicação</li>
         <li><i class="fas fa-check-circle"></i> Plano de branding completo</li>
       </ul>
-      <a href="https://wa.me/258840000000?text=Olá!%20Quero%20consultoria%20de%20marca%20com%20a%20ChiluDigital." target="_blank" class="btn" style="padding:10px 32px; margin-top:12px;"><i class="fab fa-whatsapp"></i> Solicitar orçamento</a>
+      <a href="https://wa.me/258834475438?text=Olá!%20Quero%20consultoria%20de%20marca%20com%20a%20ChiluDigital." target="_blank" class="btn" style="padding:10px 32px; margin-top:12px; width:100%; justify-content:center;"><i class="fab fa-whatsapp"></i> Solicitar orçamento</a>
     </div>
   </section>
 
-  <!-- PROCESSO -->
-  <section id="processo" class="scroll-reveal">
-    <h2 style="font-size:2.2rem; text-align:center; margin-bottom:8px;">Como <span style="color:var(--purple)">trabalhamos</span></h2>
-    <p style="text-align:center; opacity:0.7; margin-bottom:24px;">Um processo colaborativo que garante resultados incríveis.</p>
+  <section class="scroll-reveal">
+    <h2 class="section-title">Como <span style="color:var(--purple);">trabalhamos</span></h2>
+    <p class="section-sub">Um processo colaborativo que garante resultados incríveis.</p>
     <div class="process-steps">
       <div class="step"><div class="num">01</div><h4>Descoberta</h4><p>Entendemos seu negócio, público e objetivos.</p></div>
       <div class="step"><div class="num">02</div><h4>Estratégia</h4><p>Criamos um plano alinhado à sua identidade.</p></div>
@@ -279,9 +428,8 @@
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="scroll-reveal">
-    <h2 style="font-size:2rem; text-align:center;">Perguntas <span style="color:var(--cyan)">frequentes</span></h2>
+  <section class="scroll-reveal">
+    <h2 class="section-title">Perguntas <span style="color:var(--cyan);">frequentes</span></h2>
     <div class="faq-grid">
       <div class="faq-item"><h4><i class="fas fa-clock" style="color:var(--cyan);"></i> Prazo de entrega?</h4><p>Depende do projeto, mas em média 2 a 4 semanas.</p></div>
       <div class="faq-item"><h4><i class="fas fa-hand-holding-usd" style="color:var(--purple);"></i> Formas de pagamento?</h4><p>Transferência bancária, M-Pesa ou 50% sinal + 50% entrega.</p></div>
@@ -290,36 +438,43 @@
     </div>
   </section>
 
-  <!-- CONTATO / CTA -->
-  <section id="contato" class="scroll-reveal" style="margin:50px 0;">
+  <section class="scroll-reveal" style="margin:50px 0;">
     <div style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center; background:var(--glass); backdrop-filter:blur(8px); border-radius:48px; padding:40px 30px; border:1px solid var(--border); text-align:center;">
-      <div><h3 style="font-size:2rem;">Pronto para <span style="color:var(--cyan)">transformar</span> sua marca?</h3><p style="opacity:0.8;">Fale connosco e vamos criar algo incrível juntos.</p></div>
+      <div><h3 style="font-size:2rem;">Pronto para <span style="color:var(--cyan);">transformar</span> sua marca?</h3><p style="opacity:0.8;">Fale connosco e vamos criar algo incrível juntos.</p></div>
       <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
-        <a href="https://wa.me/258840000000?text=Olá!%20Quero%20saber%20mais%20sobre%20os%20serviços%20da%20ChiluDigital." target="_blank" class="btn" style="background:#25D366; box-shadow:0 8px 20px rgba(37,211,102,0.3);"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-        <a href="mailto:ola@chiludigital.co.mz" class="btn btn-outline" style="background:transparent; border:1.5px solid var(--cyan); color:var(--cyan);"><i class="fas fa-envelope"></i> Email</a>
+        <a href="https://wa.me/258834475438?text=Olá!%20Quero%20saber%20mais%20sobre%20os%20serviços%20da%20ChiluDigital." target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="mailto:ola@chiludigital.co.mz" class="btn" style="background:transparent; border:1.5px solid var(--cyan); color:var(--cyan); box-shadow:none;"><i class="fas fa-envelope"></i> Email</a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    <div><div class="logo" style="font-size:1.8rem;">ChiluDigital</div><p style="opacity:0.7;">© 2026 · Moçambique</p></div>
+    <div>
+      <div class="logo" style="font-size:1.6rem;"><i class="fas fa-cube"></i> ChiluDigital</div>
+      <p style="opacity:0.5; font-size:0.85rem; margin-top:4px;">© 2026 · Moçambique</p>
+    </div>
+    <div class="footer-links">
+      <a href="servicos.html">Serviços</a>
+      <a href="portfolio.html">Portfólio</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="termos.html">Termos</a>
+      <a href="index.html#contato">Contato</a>
+    </div>
     <div class="social-links">
-      <a href="https://wa.me/258840000000" target="_blank"><i class="fab fa-whatsapp"></i></a>
-      <a href="https://instagram.com/seu_perfil" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://facebook.com/sua_pagina" target="_blank"><i class="fab fa-facebook"></i></a>
-      <a href="https://linkedin.com/company/seu_perfil" target="_blank"><i class="fab fa-linkedin"></i></a>
-      <a href="https://github.com/seu_usuario" target="_blank"><i class="fab fa-github"></i></a>
-      <a href="https://youtube.com/@seu_canal" target="_blank"><i class="fab fa-youtube"></i></a>
-      <a href="https://tiktok.com/@seu_perfil" target="_blank"><i class="fab fa-tiktok"></i></a>
-      <a href="https://twitter.com/seu_perfil" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://wa.me/258834475438" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://instagram.com/seu_perfil" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com/sua_pagina" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://linkedin.com/company/seu_perfil" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com/seu_usuario" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://youtube.com/@seu_canal" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://tiktok.com/@seu_perfil" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://twitter.com/seu_perfil" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
     </div>
   </footer>
 </div>
 
-<!-- WHATSAPP FLOAT -->
-<a href="https://wa.me/258840000000?text=Olá!%20Vi%20os%20serviços%20da%20ChiluDigital%20e%20gostaria%20de%20mais%20informações." class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
-<button class="back-top" id="backTop"><i class="fas fa-arrow-up"></i></button>
+<a href="https://wa.me/258834475438?text=Olá!%20Vi%20os%20serviços%20da%20ChiluDigital%20e%20gostaria%20de%20mais%20informações." class="whatsapp-float" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<button class="back-top" id="backTop" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
 
 <script>
   // PARTICLES
@@ -329,26 +484,63 @@
     let w, h, dots = [];
     function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
     window.addEventListener('resize', resize); resize();
-    class Dot { constructor() { this.x = Math.random()*w; this.y = Math.random()*h; this.r = Math.random()*2+0.8; this.dx = (Math.random()-0.5)*0.6; this.dy = (Math.random()-0.5)*0.6; } update() { this.x += this.dx; this.y += this.dy; if(this.x<0||this.x>w)this.dx*=-1; if(this.y<0||this.y>h)this.dy*=-1; } }
-    for(let i=0;i<100;i++) dots.push(new Dot());
+    class Dot {
+      constructor() {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.r = Math.random() * 2 + 0.8;
+        this.dx = (Math.random() - 0.5) * 0.5;
+        this.dy = (Math.random() - 0.5) * 0.5;
+      }
+      update() {
+        this.x += this.dx; this.y += this.dy;
+        if (this.x < 0 || this.x > w) this.dx *= -1;
+        if (this.y < 0 || this.y > h) this.dy *= -1;
+      }
+    }
+    for (let i = 0; i < 120; i++) dots.push(new Dot());
     function draw() {
-      ctx.clearRect(0,0,w,h);
-      dots.forEach(d => { ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fillStyle = '#00D4FF'; ctx.shadowColor = '#7B2FBE'; ctx.shadowBlur = 12; ctx.fill(); });
+      ctx.clearRect(0, 0, w, h);
+      dots.forEach(d => {
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#00D4FF';
+        ctx.shadowColor = '#7B2FBE';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+      });
       ctx.shadowBlur = 0;
-      for(let i=0;i<dots.length;i++){ for(let j=i+1;j<dots.length;j++){ const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, dist=Math.hypot(dx,dy); if(dist<140){ ctx.beginPath(); ctx.moveTo(dots[i].x,dots[i].y); ctx.lineTo(dots[j].x,dots[j].y); ctx.strokeStyle = `rgba(0,212,255,${0.12*(1-dist/140)})`; ctx.lineWidth=0.8; ctx.stroke(); } } }
-      dots.forEach(d=>d.update());
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y, dist = Math.hypot(dx, dy);
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.strokeStyle = `rgba(0,212,255,${0.08 * (1 - dist / 150)})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+      dots.forEach(d => d.update());
       requestAnimationFrame(draw);
     }
     draw();
   })();
 
   // MENU
-  document.getElementById('menuToggle').addEventListener('click', ()=> {
+  document.getElementById('menuToggle').addEventListener('click', () => {
     document.getElementById('navMenu').classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navMenu').classList.remove('open');
+    });
   });
 
   // THEME
-  document.getElementById('themeToggle').addEventListener('click', ()=> {
+  document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
     const icon = document.querySelector('#themeToggle i');
     icon.classList.toggle('fa-moon');
@@ -358,16 +550,18 @@
   // SCROLL REVEAL
   const reveals = document.querySelectorAll('.scroll-reveal');
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('revealed'); });
-  }, { threshold: 0.2 });
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('revealed');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
   reveals.forEach(el => observer.observe(el));
 
   // BACK TO TOP
   const backBtn = document.getElementById('backTop');
-  window.addEventListener('scroll', ()=> {
-    backBtn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
   });
-  backBtn.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+  backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 </script>
 </body>
 </html>
